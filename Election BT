@@ -1,0 +1,61 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.7;
+
+contract Election{
+
+    struct Citizen{
+        bool voted;
+        uint candidateIndex;
+    }
+
+    struct Candidate{
+        string name;
+        uint256 votes;
+    }
+
+    Candidate [] public candidates;
+
+    mapping (address => Citizen) public citizens;
+
+    constructor(string [] memory candidateNames){
+
+        for(uint i=0;i<candidateNames.length;i++){
+            candidates.push(Candidate(candidateNames[i],0));
+        }
+
+    }
+    //getter
+    function getCitizen() public view returns(Citizen memory){
+        return citizens[msg.sender];
+    }
+    //getter
+    function getCandidates() public view returns (Candidate[] memory) {
+        return candidates;
+    }
+    //for vote
+    function vote(uint candidateIndex) public{
+        Citizen storage voter= citizens[msg.sender];
+        
+        require(!voter.voted, "Already voted.");
+
+        voter.voted=true;
+        voter.candidateIndex=candidateIndex;
+        candidates[candidateIndex].votes++; 
+            
+    }
+
+    function announceWinner() public view returns(string memory winnerName){
+        uint winner=0;
+        for(uint i=0;i<candidates.length;i++){
+            if(candidates[winner].votes<candidates[i].votes){
+                winner=i;
+                winnerName=candidates[winner].name;
+            }
+        }
+
+        return winnerName;
+    }
+
+
+}
