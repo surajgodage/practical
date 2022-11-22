@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.4.25;
+
+contract Bank {
+    //we have declared a variable globally in which we will store balance
+    int256 bal;
+
+    constructor() public {
+        bal = 1;
+    }
+    //ye function q h pta nahi
+    //visibility not specified so it defaulted to "public"
+    //after using it I have noticed that it is being used to reset the balance
+    function InputAndOutputParameters(int256 inputParam1) {
+        bal = inputParam1;
+    }
+    //This doesn't cost you any gas
+    function getBalance() public view returns (int256) {
+        return bal;
+    }
+
+    //for withdraawing from the bank
+    function withdraw(int256 amt) public {
+        if (bal < amt) {
+            //we are reverting with the error
+            revert("amount is not enough for withdrawl");
+        }
+        bal = bal - amt;
+    }
+    //for depositing money
+    function deposit(int256 amt) public {
+        if (amt < 0) {
+            revert("amount is not valid");
+        }
+        bal = bal + amt;
+    }
+}
