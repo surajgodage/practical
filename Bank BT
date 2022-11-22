@@ -35,3 +35,43 @@ contract Bank {
         bal = bal + amt;
     }
 }
+
+
+
+
+
+(Remix IDE)
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.7;
+
+contract Bank {
+    int bal;
+    constructor(){
+        bal = 0;
+    }
+
+    function InputAndOutputParameters(int inputParam1)public {
+        bal = inputParam1;
+    }
+
+    function getBalance() public view returns (int256) {
+        return bal;
+    }
+
+    
+    function withdraw(int256 amt) public {
+        if (bal < amt) {
+            
+            revert("amount is not enough for withdrawl");
+        }
+        bal = bal - amt;
+    }
+
+    function deposit(int256 amt) public {
+        if (amt < 0) {
+            revert("amount is not valid");
+        }
+        bal = bal + amt;
+    }
+}
